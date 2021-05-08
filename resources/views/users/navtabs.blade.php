@@ -15,7 +15,7 @@
     </li>
     {{--フォロワー一覧タブ--}}
     <li class="nav-item">
-        <a href="{{ route('users.followers',['id' => $user->id]) }}" class="nav-link" {{ Request::routeIs('users.followers')?,'active':''}}">
+        <a href="{{ route('users.followers',['id' => $user->id]) }}" class="nav-link" {{ Request::routeIs('users.followers')? 'active':''}}">
             Followers
             <span class="badge badge-secondary">{{ $user->followers_count }}</span>
         </a>
