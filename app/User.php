@@ -132,10 +132,75 @@ class User extends Authenticatable
     }
     
     /**
+     * このユーザがお気に入りに登録中の投稿（Micropostモデルとの関係を定義）
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany(Micropost::class,'favorites','user_id','micropost_id')->withTimestamps();
+    }
+
+    /**
+     * $micropostIdで指定された投稿をお気に入りにする。
+     * @param int $micropostId
+     * @return bool
+     */
+    public function favorite($micropostId)
+    {
+        //すでにお気に入りにしているかの確認
+        $exist = $this->is_favorite($micropostId);
+        //対象が自分自身の投稿かどうかの確認
+        $its_mine = $this->id == $micropostId;
+        
+        if($exist || $its_mine){
+            //すでにお気に入りにしていれば何もしない
+            return false;
+        }else{
+            //未お気に入りであればお気に入りにする
+            $this->favorites()->attach($micropostId);
+            return true;
+        }
+    }
+    
+    /**
+     * $micropostIdで指定された投稿をお気に入りから削除する
+     * 
+     * @param int $micropostId
+     * @return bool
+     */
+    public function unfavorite($micropostId)
+    {
+        //すでにお気に入りにしているかの確認
+        $exist = $this->is_favorite($micropostId);
+        //対象が自分自身の投稿かどうかの確認
+        $its_mine = $this->id == $micropostId;
+        
+        if($exist && !$its_mine){
+           //すでにお気に入りにしていればお気に入りを削除する
+           $this->favorites()->detach($micropostId);
+           return true;
+        }else{
+            //未お気に入りであれば何もしない
+            return false;
+        }
+    }
+    
+    /**
+     * 指定された$micropostIdの投稿をこのユーザがお気に入り登録中であるか調べる。お気に入り登録中ならTrueを返す
+     * 
+     * @param int $micropostId
+     * @return bool
+     */
+    public function is_favorite($micropostId)
+    {
+        //お気に入り登録中の投稿の中に$micropostIdのものが存在するか
+        return $this->favorites()->where('micropost_id',$micropostId)->exists();
+    }
+        
+    /**
      * このユーザに関係するモデルの件数をロードする。
      */
     public function loadRelationshipCounts()
     {
-        $this->loadCount('microposts','followings','followers');
+        $this->loadCount('microposts','followings','followers','favorites');
     }
 }
