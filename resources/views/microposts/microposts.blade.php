@@ -15,6 +15,7 @@
                         <p class="mb-0">{!! nl2br(e($micropost->content)) !!}</p>
                     </div>
                     <div>
+                        {{--お気に入りボタンのフォーム--}}
                         @include('favorites.favorite_button')
                     </div>
                     <div>
@@ -30,5 +31,5 @@
         @endforeach
     </ul>
     {{--ページネーションのリンク--}}
-    {{ $microposts->links() }}
+    {{ $microposts ->links() }}
 @endif
