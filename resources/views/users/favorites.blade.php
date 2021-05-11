@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('content')
     <div class="row">
@@ -9,8 +9,9 @@
         <div class="col-sm-8">
             {{--タブ--}}
             @include('users.navtabs')
-            {{--投稿一覧--}}
+            {{--お気に入り一覧--}}
             @include('favorites.favorites')
+            
         </div>
     </div>
-@section
+@endsection

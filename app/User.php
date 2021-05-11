@@ -136,7 +136,7 @@ class User extends Authenticatable
      */
     public function favorites()
     {
-        return $this->belongsToMany(User::class,'favorites','user_id','micropost_id')->withTimestamps();
+        return $this->belongsToMany(Micropost::class,'favorites','user_id','micropost_id')->withTimestamps();
     }
 
     /**
@@ -148,10 +148,8 @@ class User extends Authenticatable
     {
         //すでにお気に入りにしているかの確認
         $exist = $this->is_favorite($micropostId);
-        //対象が自分自身の投稿かどうかの確認
-        $its_mine = $this->id == $micropostId;
         
-        if($exist || $its_mine){
+        if($exist){
             //すでにお気に入りにしていれば何もしない
             return false;
         }else{
@@ -171,10 +169,8 @@ class User extends Authenticatable
     {
         //すでにお気に入りにしているかの確認
         $exist = $this->is_favorite($micropostId);
-        //対象が自分自身の投稿かどうかの確認
-        $its_mine = $this->id == $micropostId;
         
-        if($exist && !$its_mine){
+        if($exist){
            //すでにお気に入りにしていればお気に入りを削除する
            $this->favorites()->detach($micropostId);
            return true;

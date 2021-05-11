@@ -21,7 +21,7 @@ class FavoritesController extends Controller
     
     /**
      * 投稿をお気に入りから削除するアクション
-     * @param $id 投稿のid
+     * @param $id お気に入り削除する投稿のid
      * @return
      */
     public function destroy($id)
