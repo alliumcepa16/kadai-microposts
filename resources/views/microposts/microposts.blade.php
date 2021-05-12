@@ -19,7 +19,7 @@
                             {{--お気に入りボタンのフォーム--}}
                             @include('favorites.favorite_button')
                         </div>
-                        <div class="offset-1 col-1">
+                        <div class="offset-2 col-1">
                             @if (Auth::id() == $micropost->user_id)
                                 {{--投稿削除ボタンのフォーム--}}
                                 {!! Form::open(['route' => ['microposts.destroy', $micropost->id],'method' => 'delete']) !!}
